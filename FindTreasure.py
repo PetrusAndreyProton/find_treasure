@@ -48,3 +48,28 @@ def getRandomChests(numChests):
         if newChest not in chests:
             chests.append(newChest)
     return chests
+
+
+def isOnBoard(x, y):
+    return x >= 0 and x <= 59 and y >= 0 and y <= 14
+
+
+def makeMove(board, chests, x, y):
+    smallestDistance = 100
+    for cx, cy in chests:
+        distance = math.sqrt((cx - x) * (cx - x) + (cy - y) * (cy - y))
+        if distance < smallestDistance:
+            smallestDistance = distance
+
+    smallestDistance = round(smallestDistance)
+
+    if smallestDistance == 0:
+        chests.remove([x, y])
+        return 'Вы нашли сундук с сокровищами на затонувшем судне!'
+    else:
+        if smallestDistance < 10:
+            board[x][y] = str(smallestDistance)
+            return 'Сундук с сокровищами обнаружен на расстоянии %s от гидролокатора.' % (smallestDistance)
+        else:
+            board[x][y] = 'X'
+            return 'Гидролокатор ничего не обнаружил. Все сундуки с сокровищами вне пределов досягаемости.'
